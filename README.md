@@ -324,7 +324,7 @@ converted log file actually contains 7 fields, each of which is never empty.
 4.2. Break down the number of HTTP requests that did not have a 200 return code by date
    (i.e. how many responses were 304, 404, etc. on each day).
 
-<!--
+ 
 ## Section 3: Data cleaning and transformation with sed
 
 In this exercise we will learn how to use command line tools to transform
