@@ -67,7 +67,7 @@ should be sorted.
 ### Exercises
 1.1. What are the 10 biggest directories at depth 1 in /usr/lib on your virtual machine?
 
-1.2. What are the 5 biggest directories in /home/datascience, including hidden folders?
+
 
 ## Section 2: Log processing with command line tools
 
@@ -88,7 +88,7 @@ on most UNIX machines and should be installed in your VM. To download a file
 using curl you need to run `curl <url> -o <filename>`. For example to download
 the course webpage in html you can run something like
 
-    curl http://biddata.github.io/datascience-fa14/index.html -o index.html
+    curl https://www.bell-labs.com/usr/dmr/www/manintro.html -o index.html
 
 This will download the course webpage and save it to a file named `index.html`
 in your current directory. This is of course a simple example of how you can use
@@ -112,9 +112,7 @@ WorldCup website. The [complete
 dataset](http://ita.ee.lbl.gov/html/contrib/WorldCup.html) contains
 around 1.3 billion requests, and we will use a subset of it for this exercise.
 As a first step download the sample dataset using `curl` from
-`https://raw.github.com/biddata/datascience-fa14/master/lab1/data/wc_day6_1_log.tar.bz2` .
-(You will need `-L` since this redirects to a non-github.com domain for
-[security reasons](https://developer.github.com/changes/2014-04-25-user-content-security/).)
+`ftp://ita.ee.lbl.gov/traces/WorldCup/wc_day10_1.gz` .
 
 The dataset has been compressed to make the download finish faster. To get the
 raw data unzip the downloaded file by running `tar -xf <filename>`. (Note: `tar`
@@ -122,7 +120,7 @@ is also a very frequently used command line tool and you can learn more about it
 with `man tar`).
 
 Having extracted the file, take a look at how the file looks by running `less
-wc_day6_1.log`. This will show you the first few lines of the file and you can
+wc_day10_1.log`. This will show you the first few lines of the file and you can
 page through the file using the arrow keys. You will notice that each hit or
 access to the website is logged as in a new line in the log file. The format of
 each line is in the [Common Log File
@@ -152,29 +150,29 @@ Before we get to the exercises, lets explore the dataset and try out some basic
 commands.
 
 First up lets count how many visits the website got. To do this we just count
-the number of lines in the file by running `wc -l wc_day6_1.log`. Your output
+the number of lines in the file by running `wc -l wc_day10_1.log`. Your output
 should look like
 
-    1193353 wc_day6_1.log
+    1193353 wc_day10_1.log
 
 We can do something more interesting by finding out how many times the ticketing
 webpage was visited. To do this you could run
 
-    grep tickets wc_day6_1.log | wc -l
+    grep tickets wc_day10_1.log | wc -l
     29818
 
 However the above line counts images and other elements which have the word
 `tickets` in their path. (Note: You can verify this using `less`). To restrict
 it to just `html` pages, you can use a regular expression
 
-    grep "tickets.*html" wc_day6_1.log | wc -l
+    grep "tickets.*html" wc_day10_1.log | wc -l
     2776
 
 We can also prune the dataset to only look at interesting parts of it. For
 example we can just look at the first 50 URIs and their sizes using the `head`
 and `cut` command.
 
-    head -50 wc_day6_1.log | cut -d ' ' -f 7,10
+    head -50 wc_day10_1.log | cut -d ' ' -f 7,10
 
 In the above command the `-d` flag denotes what delimiter to use and `-f` stats
 what fields should be selected from the line. Try out different delimiter and
@@ -183,14 +181,14 @@ field values to see how `cut` works.
 Finally we can see how many unique URIs are there in the first 50 visits. To do
 this we could run something like
 
-    head -50 wc_day6_1.log | cut -d ' ' -f 7 | sort | uniq | wc -l
+    head -50 wc_day10_1.log | cut -d ' ' -f 7 | sort | uniq | wc -l
 
 Here we use the tool `uniq` to only count unique URIs. Note that the input to
 `uniq` should be sorted, so we use `sort` before calling `uniq`. The `uniq` tool
 can also be used to count how many times an item occurs by passing it the `-c` flag.
 For example if we run the same command as above but with `uniq -c` we'll get
 
-    head -50 wc_day6_1.log  | cut -d ' ' -f 7 | sort | uniq -c | tail -10
+    head -50 wc_day10_1.log  | cut -d ' ' -f 7 | sort | uniq -c | tail -10
       1 /images/home_fr_phrase.gif
       2 /images/home_intro.anim.gif
       1 /images/home_logo.gif
@@ -278,7 +276,7 @@ and ` +0000]`. We can remove the ` +0000]`s using `sed 's/ +0000]//'`. To try th
 on the first ten lines of the log file, use:
 
 ```
-head wc_day6_1.log | sed 's/ +0000]//'
+head wc_day10_1.log | sed 's/ +0000]//'
 ```
 
 Similarly, we can remove `[` using `s/\[//`. (We need the backslash before the `[` to prevent
@@ -286,13 +284,13 @@ sed from treating it as a special character in its regular expression syntax.) W
 our previous cleaning using:
 
 ```
-head wc_day6_1.log | sed 's/ +0000]//' | sed 's/\[//'
+head wc_day10_1.log | sed 's/ +0000]//' | sed 's/\[//'
 ```
 
 or, only invoking `sed` once:
 
 ```
-head wc_day6_1.log | sed 's/ +0000]//; s/\[//'
+head wc_day10_1.log | sed 's/ +0000]//; s/\[//'
 ```
 
 ### Backreferences in sed
@@ -315,9 +313,7 @@ of dates.
 3.3 Check (e.g. with `cut` and `grep` or with a `sed` script) that each line of your
 converted log file actually contains 7 fields, each of which is never empty.
 
-# Response form
 
-Fill out the questions [here](https://bcourses.berkeley.edu/courses/1267848/quizzes/1755407).
 
 
 ## Challenge Exercises (Optional)
